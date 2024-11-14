@@ -9,7 +9,7 @@ error correction (GEC) tools on a part of the test data of the GECCC corpus.
 git clone https://github.com/strakova/gec_tool_comparison
 ```
 
-2. Download the GECCCC corpus into the `GECCC` directory, and unzip it:
+2. Download the GECCC corpus into the `GECCC` directory, and unzip it:
 
 ```sh
 mkdir GECCC
