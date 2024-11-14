@@ -3,7 +3,11 @@
 This repository contains a rigorous evaluation of the available Czech grammar
 error correction (GEC) tools on a part of the test data of the GECCC corpus.
 
-1. Clone this repository.
+1. Clone this repository:
+
+```sh
+git clone https://github.com/strakova/gec_tool_comparison
+```
 
 2. Download the GECCCC corpus into the `GECCC` directory, and unzip it:
 
