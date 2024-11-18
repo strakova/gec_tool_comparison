@@ -26,8 +26,8 @@ venv/bin/pip install -r requirements.txt
 ```
 
 4. Select the test sentences from GECCC for evaluation. Current default values
-   of the script will select cca 10% of the test sentences, and you should get
-   the same stats as in the file `stats.txt`:
+   of the script will select 10.36% of the test sentences, and you should get
+   exactly the same stats as in the file `stats.txt`:
 
 ```sh
 venv/bin/python ./select_sentences_for_evaluation.py
@@ -39,4 +39,8 @@ venv/bin/python ./select_sentences_for_evaluation.py
    - Opravidlo Betaverze, https://opravidlo.cz/, accessed 2024-11-14,
    - Google Docs, accessed 2024-11-24.
 
-  You will find the corrections in directory `GECCC_corrections/`.
+  You will find the corrections in `GECCC_corrections`.
+
+## Contact
+
+Jana Straková `strakova@ufal.mff.cuni.cz`
