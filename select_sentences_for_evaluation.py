@@ -22,11 +22,15 @@ import pandas as pd
 NATIVES_FORMAL_HEADER_SIZE=15
 
 
-def read_edits(filename):
-    edits = []
-    lengths = []
+def read_edits(path):
+    """Read edits from an M2 file.
 
-    with open(filename, "r", encoding="utf-8") as fr:
+    Arguments:
+        path: path to an M2 file.
+    """
+    edits, lengths, edits_str = [], [], []
+
+    with open(path, "r", encoding="utf-8") as fr:
         for line in fr:
             line = line.strip()
 
@@ -36,11 +40,15 @@ def read_edits(filename):
             if line.startswith("S"):
                 edits.append(0)
                 lengths.append(len(line.split(" ")))
+                edits_str.append([])
 
             if line.startswith("A"):
                 edits[-1] += 1
+                edits_str[-1].append(line)
 
-    return edits, lengths
+    edits_str = ["\n".join(row) for row in edits_str]
+
+    return pd.DataFrame({"Edits": edits, "Lengths": lengths, "Edits_str": edits_str})
 
 
 if __name__ == "__main__":
@@ -58,9 +66,7 @@ if __name__ == "__main__":
     meta = pd.read_csv(os.path.join(args.geccc, "data", "meta.tsv"), delimiter="\t", encoding="utf-8")
     meta_sentences = pd.read_csv(os.path.join(args.geccc, "data", "test", "sentence.meta"), delimiter="\t", header=None, names=["Filename"], encoding="utf-8")
 
-    edits, lengths = read_edits(os.path.join(args.geccc, "data", "test", "sentence.m2"))
-    edits = pd.DataFrame(edits, columns=["Edits"])
-    lengths = pd.DataFrame(lengths, columns=["Lengths"])
+    edits = read_edits(os.path.join(args.geccc, "data", "test", "sentence.m2"))
 
     # Read lines in manually to check for hidden characters, which otherwise
     # make pandas read less sentences than we have in the file.
@@ -70,7 +76,7 @@ if __name__ == "__main__":
 
     assert(len(sentences) == len(meta_sentences))
     assert(len(sentences) == len(edits))
-    sentences = pd.concat([sentences, meta_sentences, edits, lengths], axis=1)
+    sentences = pd.concat([sentences, meta_sentences, edits], axis=1)
 
     os.makedirs(args.output_dir, exist_ok=True)
 
@@ -103,10 +109,19 @@ if __name__ == "__main__":
         n_docs_printed = len(sentences_to_print)
         sentences_to_print = pd.concat(sentences_to_print)
 
+        # Write the sentences into a txt file.
         with open(os.path.join(args.output_dir, "{}.txt".format(domain.replace(" ", "_"))), "w", encoding="utf-8") as fw:
             for sentence in sentences_to_print["Sentence"]:
                 print(sentence, file=fw)
 
+        # Write the sentences and edits into an M2 file.
+        with open(os.path.join(args.output_dir, "{}.m2".format(domain.replace(" ", "_"))), "w", encoding="utf-8") as fw:
+            for sentence, edits_str in zip(sentences_to_print["Sentence"], sentences_to_print["Edits_str"]):
+                print("S {}".format(sentence), file=fw)
+                print(edits_str, file=fw)
+                print("", file=fw)
+
+        # Print summary.
         print("Domain \"{}\" Summary:".format(domain))
         print("Selected documents: {}/{} ({:.2f}\%), " \
               "sentences: {}/{} ({:.2f}\%), " \
