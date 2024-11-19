@@ -40,10 +40,17 @@ venv/bin/python ./select_sentences_for_evaluation.py
    - Opravidlo Betaverze, https://opravidlo.cz/, accessed 2024-11-14,
    - Google Docs, accessed 2024-11-14.
 
-6. Evaluate the system corrections with the m2scorer:
+6. Evaluate the system corrections with the m2scorer. The evaluations will be
+   printed to `*.eval` files in the directory `GECCC_evals`:
 
 ```sh
 ./evaluate_corrections.sh
+```
+
+7. Make LaTeX table from the evaluations:
+
+```sh
+./make_table.py
 ```
 
 ## Contact
