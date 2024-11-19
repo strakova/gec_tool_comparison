@@ -3,10 +3,6 @@
 This repository contains a rigorous evaluation of the available Czech grammar
 error correction (GEC) tools on a part of the test data of the GECCC corpus.
 
-**TODO: Tokenization:** Currently, the reported system results are **NOT**
-tokenized, but are compared to tokenized gold M2 files anyway, resulting in
-artificially lower results.
-
 1. Clone this repository:
 
 ```sh

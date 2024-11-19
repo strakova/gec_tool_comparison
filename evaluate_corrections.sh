@@ -15,12 +15,15 @@ mkdir -p $EVALS
 
 echo "Evaluating:"
 for system in `ls $CORRECTIONS`; do
-  all_system_corrections=$EVALS/All-$system.txt
-  >$all_system_corrections
+
+  # Eval files for overall evaluation
+  all_tokenized=$EVALS/All-$system.txt
+  >$all_tokenized
 
   all_m2=$EVALS/All-$system.m2
   >$all_m2
 
+  # Domain evaluation
   for domain in "Natives_Formal" "Natives_Web_Informal" "Romani" "Second_Learners"; do
     m2=$GOLD/$domain.m2
 
@@ -30,18 +33,22 @@ for system in `ls $CORRECTIONS`; do
 
     if [ ! -f $system_corrections ]; then continue; fi
 
-    venv/bin/m2scorer $system_corrections $m2 > $eval_file
+    # Tokenize
+    tokenized=/tmp/$domain-$system.tokenized
+    cat $system_corrections | venv/bin/python ./udpipe_tokenizer.py > $tokenized
+
+    venv/bin/m2scorer $tokenized $m2 > $eval_file
 
     # Aggregate for overall evaluation
     cat $m2 >> $all_m2
-    cat $system_corrections >> $all_system_corrections
+    cat $tokenized >> $all_tokenized
   done
 
   # Overall evaluation
   all_eval_file=$EVALS/All-$system.eval
-  echo "$all_system_corrections -> $all_eval_file"
-  venv/bin/m2scorer $all_system_corrections $all_m2 > $all_eval_file
+  echo "$all_tokenized -> $all_eval_file"
+  venv/bin/m2scorer $all_tokenized $all_m2 > $all_eval_file
 
-  rm $all_system_corrections
+  rm $all_tokenized
   rm $all_m2
 done
