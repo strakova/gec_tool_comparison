@@ -1,2 +1,3 @@
 git+https://github.com/petrpechman/m2scorer.git
 pandas
+ufal.udpipe
