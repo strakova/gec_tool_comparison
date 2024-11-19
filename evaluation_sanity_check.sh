@@ -14,7 +14,11 @@
 # http://ufal.mff.cuni.cz/biblio/attachments/2022-naplava-p2208933306287912570.pdf
 #
 # Our evaluation on the entire GECCC test set should arrive at a similar
-# number.
+# number:
+#
+# Precision   : 0.5120
+# Recall      : 0.2472
+# F_0.5       : 0.4217
 
 set -e
 
