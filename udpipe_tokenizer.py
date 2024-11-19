@@ -41,15 +41,9 @@ class UDPipeTokenizer:
         if self._model is None:
             raise RuntimeError("Cannot load tokenizer from {}".format(path))
 
-    def tokenize(self, text, mode="untokenized"):
-        if mode == "untokenized":
-            tokenizer = self._model.newTokenizer(self._model.DEFAULT)
-        elif mode == "vertical":
-            tokenizer = ufal.udpipe.InputFormat.newVerticalInputFormat()
-        elif mode.startswith("conllu"):
-            tokenizer = ufal.udpipe.InputFormat.newConlluInputFormat()
-        else:
-            raise ValueError("Unknown tokenizer mode '{}'".format(mode))
+    def tokenize(self, text):
+        tokenizer = self._model.newTokenizer(self._model.DEFAULT)
+
         if tokenizer is None:
             raise RuntimeError("Cannot create the tokenizer")
 
