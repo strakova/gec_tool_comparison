@@ -37,7 +37,6 @@ if __name__ == "__main__":
     evals = dict()
 
     for filename in os.listdir(args.evals):
-        print(filename)
         domain, rest = filename.split("-")
         system, _ = rest.split(".")
 
@@ -53,8 +52,6 @@ if __name__ == "__main__":
         if system not in evals:
             evals[system] = dict()
         evals[system][domain] = float(Fscore) * 100
-
-    print(evals)
 
     print("System & {} \\\\".format(" & ".join(DOMAINS)))
     print("\\midrule")
