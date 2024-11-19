@@ -56,8 +56,8 @@ if __name__ == "__main__":
     print("System & {} \\\\".format(" & ".join(DOMAINS)))
     print("\\midrule")
 
-    for system, system_evals in evals.items():
+    for system in sorted(evals.keys()):
         print("{} & ".format(system), end="")
-        Fscores = [system_evals[domain] for domain in DOMAINS]
+        Fscores = [evals[system][domain] for domain in DOMAINS]
         print(" & ".join(["{:.2f}".format(Fscore) for Fscore in Fscores]), end="")
         print(" \\\\")
