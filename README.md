@@ -33,13 +33,18 @@ venv/bin/pip install -r requirements.txt
 venv/bin/python ./select_sentences_for_evaluation.py
 ```
 
-5. Manually upload/open the documents in the GEC tools of your choice and accept
-   all the suggested GEC corrections. We used the following:
+5. Manually upload/open the documents in the GEC tools of your choice, accept
+   all the suggested GEC corrections, and save the results into
+   `GECCC_corrections`. We used the following:
 
    - Opravidlo Betaverze, https://opravidlo.cz/, accessed 2024-11-14,
    - Google Docs, accessed 2024-11-24.
 
-  You will find the corrections in `GECCC_corrections`.
+6. Evaluate the system corrections with the m2scorer:
+
+```sh
+./evaluate_corrections.sh
+```
 
 ## Contact
 
