@@ -38,7 +38,7 @@ venv/bin/python ./select_sentences_for_evaluation.py
    `GECCC_corrections`. We used the following:
 
    - Opravidlo Betaverze, https://opravidlo.cz/, accessed 2024-11-14,
-   - Google Docs, accessed 2024-11-24.
+   - Google Docs, accessed 2024-11-14.
 
 6. Evaluate the system corrections with the m2scorer:
 
