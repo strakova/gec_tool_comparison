@@ -25,6 +25,6 @@ echo "$input -> $output"
 curl -F "data=@$input" http://lindat.mff.cuni.cz/services/korektor/api/correct | PYTHONIOENCODING=utf-8 python3 -c "import sys,json; sys.stdout.write(json.load(sys.stdin)['result'])" > $output
 
 output_tokenized=${output}.tokenized
-cat $output | venv/bin/python ./udpipe_tokenizer.py "cs-tokenized" > $output_tokenized
+cat $output | venv/bin/python ./udpipe_tokenizer.py > $output_tokenized
 
 venv/bin/m2scorer $output_tokenized GECCC/data/test/sentence.m2
