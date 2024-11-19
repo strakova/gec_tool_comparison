@@ -38,7 +38,8 @@ venv/bin/python ./select_sentences_for_evaluation.py
    `GECCC_corrections`. We used the following:
 
    - Opravidlo Betaverze, https://opravidlo.cz/, accessed 2024-11-14,
-   - Google Docs, accessed 2024-11-14.
+   - Google Docs, accessed 2024-11-14,
+   - [Korektor](https://ufal.mff.cuni.cz/korektor), accessed 2024-11-19.
 
 6. Evaluate the system corrections with the m2scorer. The evaluations will be
    printed to `*.eval` files in the directory `GECCC_evals`:
