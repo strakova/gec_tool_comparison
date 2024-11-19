@@ -18,7 +18,7 @@ curl --remote-name-all https://lindat.mff.cuni.cz/repository/xmlui/bitstream/han
 unzip geccc.zip
 ```
 
-3. Install Python venv:
+3. Install dependencies:
 
 ```sh
 python3 -m venv venv
