@@ -28,7 +28,7 @@ def read_edits(path):
     Arguments:
         path: path to an M2 file.
     """
-    edits, lengths, edits_str = [], [], []
+    edits, lengths, edits_str, tokenized = [], [], [], []
 
     with open(path, "r", encoding="utf-8") as fr:
         for line in fr:
@@ -41,6 +41,7 @@ def read_edits(path):
                 edits.append(0)
                 lengths.append(len(line.split(" ")))
                 edits_str.append([])
+                tokenized.append(line)
 
             if line.startswith("A"):
                 edits[-1] += 1
@@ -48,7 +49,7 @@ def read_edits(path):
 
     edits_str = ["\n".join(row) for row in edits_str]
 
-    return pd.DataFrame({"Edits": edits, "Lengths": lengths, "Edits_str": edits_str})
+    return pd.DataFrame({"Edits": edits, "Lengths": lengths, "Edits_str": edits_str, "Tokenized": tokenized})
 
 
 if __name__ == "__main__":
@@ -116,8 +117,8 @@ if __name__ == "__main__":
 
         # Write the sentences and edits into an M2 file.
         with open(os.path.join(args.output_dir, "{}.m2".format(domain.replace(" ", "_"))), "w", encoding="utf-8") as fw:
-            for sentence, edits_str in zip(sentences_to_print["Sentence"], sentences_to_print["Edits_str"]):
-                print("S {}".format(sentence), file=fw)
+            for tokenized_sentence, edits_str in zip(sentences_to_print["Tokenized"], sentences_to_print["Edits_str"]):
+                print("{}".format(tokenized_sentence), file=fw)
                 print(edits_str, file=fw)
                 print("", file=fw)
 
