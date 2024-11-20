@@ -8,74 +8,85 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-"""
-UDPipe Czech sentence tokenizer.
-
-Tokenizes Czech sentences from a txt file, each one by one, thereby treating
-the sentences as presegmented. Specifically, the number of output (tokenized)
-lines will be exactly the same as the number of input sentences (lines) to
-tokenize. Input sentences are not merged, neither are they segmented further.
-If the UDPipe suggests further segmentation, the tokenized sentence fragments
-are merged together to keep the sentence on one line.
-
-The class UDPipeTokenizer is copied from NameTag 3 server:
-https://github.com/ufal/nametag3/blob/main/nametag3_server.py
-"""
-
-
-import sys
 
 import ufal.udpipe
 
 
 class UDPipeTokenizer:
+    MODELS = {
+        "cs": "udpipe_tokenizer/czech-pdt-ud-2.5-191206.udpipe",
+        "cs-tokenized": "udpipe_tokenizer/cs-tokenized.model",
+        "de": "udpipe_tokenizer/german-gsd-ud-2.5-191206.udpipe",
+        "en": "udpipe_tokenizer/english-ewt-ud-2.5-191206.udpipe",
+        "ru": "udpipe_tokenizer/russian-syntagrus-ud-2.5-191206.udpipe",
+    }
+
+    MODELS_NO_PATHS = {
+        "cs": "czech-pdt-ud-2.5-191206.udpipe",
+        "cs-tokenized": "cs-tokenized.model",
+        "de": "german-gsd-ud-2.5-191206.udpipe",
+        "en": "english-ewt-ud-2.5-191206.udpipe",
+        "ru": "russian-syntagrus-ud-2.5-191206.udpipe",
+    }
+
     class Token:
-        def __init__(self, token, spaces_before, spaces_after):
-            self.token = token
-            self.spaces_before = spaces_before
-            self.spaces_after = spaces_after
+        def __init__(self, string, start, end):
+            self.string = string
+            self.start = start
+            self.end = end
 
+    def __init__(self, lang, nopaths: bool = None):
+        if nopaths:
+            self._model = ufal.udpipe.Model.load(self.MODELS_NO_PATHS[lang])
+        else:
+            self._model = ufal.udpipe.Model.load(self.MODELS[lang])
 
-    def __init__(self, path):
-        self._model = ufal.udpipe.Model.load(path)
-        if self._model is None:
-            raise RuntimeError("Cannot load tokenizer from {}".format(path))
+        if not self._model:
+            raise RuntimeError("Cannot load UDPipe tokenizer for language \"{}\"".format(lang)) 
 
     def tokenize(self, text):
-        tokenizer = self._model.newTokenizer(self._model.DEFAULT)
+        """ Return tokenized text as a list of sentences, each a list of tokens. """
 
-        if tokenizer is None:
-            raise RuntimeError("Cannot create the tokenizer")
+        tokenizer = self._model.newTokenizer(self._model.TOKENIZER_RANGES)
+        if not tokenizer:
+            raise RuntimeError("The model does not have a tokenizer")
+
+        tokenizer.setText(text)
+        error = ufal.udpipe.ProcessingError()
+        sentences = []
 
         sentence = ufal.udpipe.Sentence()
-        processing_error = ufal.udpipe.ProcessingError()
-        tokenizer.setText(text)
-        while tokenizer.nextSentence(sentence, processing_error):
-            yield sentence
-            sentence = ufal.udpipe.Sentence()
-        if processing_error.occurred():
-            raise RuntimeError("Cannot read input data: '{}'".format(processing_error.message))
+        while tokenizer.nextSentence(sentence, error):
+            sentences.append([])
 
+            multiword_token = 0
+            for word in sentence.words[1:]:
+                while multiword_token < len(sentence.multiwordTokens) and \
+                        word.id > sentence.multiwordTokens[multiword_token].idLast:
+                    multiword_token += 1
+                if multiword_token < len(sentence.multiwordTokens) and \
+                        word.id >= sentence.multiwordTokens[multiword_token].idFirst and \
+                        word.id <= sentence.multiwordTokens[multiword_token].idLast:
+                    if word.id > sentence.multiwordTokens[multiword_token].idFirst:
+                        continue
+                    word = sentence.multiwordTokens[multiword_token]
+                sentences[-1].append(self.Token(word.form, word.getTokenRangeStart(), word.getTokenRangeEnd()))
+
+        if error.occurred():
+            raise RuntimeError(error.message)
+
+        return sentences
 
 if __name__ == "__main__":
+    import argparse
+    import fileinput
+    import sys
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--lang", default="cs", type=str, help="Language to use")
+    parser.add_argument("-n", "--nopaths", default=False, action='store_true')
+    args = parser.parse_args()
 
-    tokenizer = UDPipeTokenizer("udpipe_tokenizer/czech-pdt-ud-2.5-191206.udpipe")
+    tokenizer = UDPipeTokenizer(args.lang, args.nopaths)
 
     for line in sys.stdin:
-        sentences = [sentence for sentence in tokenizer.tokenize(line.strip())]
-
-        # Skip multiwords, get tokens from sentences
-        tokens = []
-        for sentence in sentences:
-            word, multiword_token = 1, 0
-            while word < len(sentence.words):
-                if multiword_token < len(sentence.multiwordTokens) and sentence.multiwordTokens[multiword_token].idFirst == word:
-                    token = sentence.multiwordTokens[multiword_token]
-                    word = sentence.multiwordTokens[multiword_token].idLast + 1
-                    multiword_token += 1
-                else:
-                    token = sentence.words[word]
-                    word += 1
-                tokens.append(token.form)
-
-        print(" ".join(tokens))
+        print(*[token.string for sentence in tokenizer.tokenize(line) for token in sentence])
