@@ -28,7 +28,13 @@
 #    udpipe_tokenizer/czech-pdt-ud-2.5-191206.udpipe, with the official
 #    udpipe_tokenizer.py script.
 #
-# 2. TODO: diff sentences in M2 vs. our tokenized Korektor outputs.
+# 2. CORRECT: Our derived developmental m2scorer reports the same evaluation
+#    scores as the original m2scorer from https://github.com/nusnlp/m2scorer.
+#
+# 3. TODO: diff sentences in M2 vs. our tokenized Korektor outputs.
+#
+# 4. TODO: Evaluation document-by-document as opposed to entire test dataset at
+#    once could also mess with Korektor, as the contexts are mixed.
 
 set -e
 
