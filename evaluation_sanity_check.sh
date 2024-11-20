@@ -13,12 +13,22 @@
 # in Table 7:
 # http://ufal.mff.cuni.cz/biblio/attachments/2022-naplava-p2208933306287912570.pdf
 #
-# Our evaluation on the entire GECCC test set should arrive at a similar
-# number:
+# Our evaluation on the entire GECCC test set should reproduce similar number.
+#
+# Ours:
 #
 # Precision   : 0.5120
 # Recall      : 0.2472
-# F_0.5       : 0.4217
+# F_0.5       : 0.4217 (!)
+#
+# This is not exactly it, although close, so let's check why we did not exactly
+# reproduce the results:
+#
+# 1. CORRECT: We are using the same tokenizer:
+#    udpipe_tokenizer/czech-pdt-ud-2.5-191206.udpipe, with the official
+#    udpipe_tokenizer.py script.
+#
+# 2. TODO: diff sentences in M2 vs. our tokenized Korektor outputs.
 
 set -e
 
