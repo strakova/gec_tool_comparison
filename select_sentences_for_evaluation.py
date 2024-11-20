@@ -9,11 +9,15 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
-Gets data for GEC evaluation.
+Selects data for GEC evaluation of the Czech GEC tools.
+
+With default command-line arguments, the script will select 10.36% of the test
+sentences for (manual) comparison of the Czech GEC tools.
 """
 
 
 import os
+import shutil
 import sys
 
 import pandas as pd
@@ -79,12 +83,21 @@ if __name__ == "__main__":
     assert(len(sentences) == len(edits))
     sentences = pd.concat([sentences, meta_sentences, edits], axis=1)
 
+    if os.path.exists(args.output_dir) and os.path.isdir(args.output_dir):
+        print("Removing existing dir \"{}\"".format(args.output_dir), file=sys.stderr)
+        shutil.rmtree(args.output_dir)
     os.makedirs(args.output_dir, exist_ok=True)
 
     n_selected_docs, n_total_docs = 0, 0
     total_selected_sentences = []
 
     for domain in meta["Domain"].unique():
+        # Make domain directory for the input txt files with sentences.
+        output_domain_dir = os.path.join(args.output_dir, domain.replace(" ", "_"))
+        if os.path.exists(output_domain_dir) and os.path.isdir(output_domain_dir):
+            print("Removing existing dir \"{}\"".format(output_domain_dir), file=sys.stderr)
+            shutil.rmtree(output_domain_dir)
+        os.makedirs(output_domain_dir, exist_ok=True)
 
         docs_in_domain = meta[(meta["Filename"].isin(meta_sentences["Filename"])) & (meta["Domain"] == domain)]
         sentences_in_domain = sentences[sentences["Filename"].isin(docs_in_domain["Filename"])]
@@ -107,15 +120,15 @@ if __name__ == "__main__":
                 sentences_to_print.append(doc_sentences)
                 n_sentences += len(doc_sentences)
 
+                # Write the document sentences into an input txt file.
+                with open(os.path.join(output_domain_dir, "{:03}_{}.txt".format(len(sentences_to_print), filename)), "w", encoding="utf-8") as fw:
+                    for sentence in doc_sentences["Sentence"]:
+                        print(sentence, file=fw)
+
         n_docs_printed = len(sentences_to_print)
         sentences_to_print = pd.concat(sentences_to_print)
 
-        # Write the sentences into a txt file.
-        with open(os.path.join(args.output_dir, "{}.txt".format(domain.replace(" ", "_"))), "w", encoding="utf-8") as fw:
-            for sentence in sentences_to_print["Sentence"]:
-                print(sentence, file=fw)
-
-        # Write the sentences and edits into an M2 file.
+        # Write the selected tokenized sentences with edits from gold M2 file.
         with open(os.path.join(args.output_dir, "{}.m2".format(domain.replace(" ", "_"))), "w", encoding="utf-8") as fw:
             for tokenized_sentence, edits_str in zip(sentences_to_print["Tokenized"], sentences_to_print["Edits_str"]):
                 print("{}".format(tokenized_sentence), file=fw)

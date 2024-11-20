@@ -10,6 +10,7 @@
 GOLD="GECCC_test_selection"
 CORRECTIONS="GECCC_corrections"
 EVALS="GECCC_evals"
+TMP="/tmp"
 
 mkdir -p $EVALS
 
@@ -27,16 +28,23 @@ for system in `ls $CORRECTIONS`; do
   for domain in "Natives_Formal" "Natives_Web_Informal" "Romani" "Second_Learners"; do
     m2=$GOLD/$domain.m2
 
-    eval_file=$EVALS/$domain-$system.eval
-    system_corrections=$CORRECTIONS/$system/$domain-$system.txt
-    echo "$system_corrections -> $eval_file"
+    system_corrections=$TMP/$system.txt
+    cat $CORRECTIONS/$system/$domain/*.txt > $system_corrections
 
-    if [ ! -f $system_corrections ]; then continue; fi
+    eval_file=$EVALS/$domain-$system.eval
+
+    echo "Evaluating system $system on domain $domain, printing results to eval file $eval_file"
 
     # Tokenize
-    tokenized=/tmp/$domain-$system.tokenized
-    cat $system_corrections | venv/bin/python ./udpipe_tokenizer.py > $tokenized
+    case $system in
+      Korektor) # input was already tokenized before sending to Korektor
+        tokenized=$system_corrections;;
+      *)
+        tokenized=/tmp/$domain-$system.tokenized
+        cat $system_corrections | venv/bin/python ./udpipe_tokenizer.py > $tokenized;;
+    esac
 
+    # Evaluate with m2scorer
     venv/bin/m2scorer $tokenized $m2 > $eval_file
 
     # Aggregate for overall evaluation
