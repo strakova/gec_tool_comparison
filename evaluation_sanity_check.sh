@@ -13,38 +13,37 @@
 # in Table 7:
 # http://ufal.mff.cuni.cz/biblio/attachments/2022-naplava-p2208933306287912570.pdf
 #
-# Our evaluation on the entire GECCC test set should reproduce similar number.
+# Our evaluation on the entire GECCC test set should reproduce similar number:
 #
-# Ours:
-#
-# Precision   : 0.5120
-# Recall      : 0.2472
-# F_0.5       : 0.4217 (!)
-#
-# This is not exactly it, although close, so let's check why we did not exactly
-# reproduce the results:
-#
-# 1. CORRECT: We are using the same tokenizer:
-#    udpipe_tokenizer/czech-pdt-ud-2.5-191206.udpipe, with the official
-#    udpipe_tokenizer.py script.
-#
-# 2. CORRECT: Our derived developmental m2scorer reports the same evaluation
-#    scores as the original m2scorer from https://github.com/nusnlp/m2scorer.
-#
-# 3. TODO: diff sentences in M2 vs. our tokenized Korektor outputs.
-#
-# 4. TODO: Evaluation document-by-document as opposed to entire test dataset at
-#    once could also mess with Korektor, as the contexts are mixed.
+# Precision   : 0.5513
+# Recall      : 0.2631
+# F_0.5       : 0.4522
 
 set -e
 
-echo "Correcting GECCC test data with Korektor:"
+TMP=/tmp
+MODEL="czech-spellchecker_2edits-130202"
 input=GECCC/data/test/sentence.input
-output=/tmp/sentence.output
-echo "$input -> $output"
-curl -F "data=@$input" http://lindat.mff.cuni.cz/services/korektor/api/correct | PYTHONIOENCODING=utf-8 python3 -c "import sys,json; sys.stdout.write(json.load(sys.stdin)['result'])" > $output
+input_tokenized=$TMP/sentence.tokenized
+output=$TMP/sentence.output
 
-output_tokenized=${output}.tokenized
-cat $output | venv/bin/python ./udpipe_tokenizer.py > $output_tokenized
+# Tokenize
+cat $input | venv/bin/python ./udpipe_tokenizer.py > $input_tokenized
 
-venv/bin/m2scorer $output_tokenized GECCC/data/test/sentence.m2
+# Split input file into chunks to meet Korektor processing limit
+head -5000 $input_tokenized > $input_tokenized.1
+tail -n +5001 $input_tokenized > $input_tokenized.2
+
+# Correct the file chunks by calling Korektor
+echo "Correcting GECCC test data with Korektor:"
+for i in 1 2; do
+  echo "$input_tokenized.$i -> $output.$i"
+  curl -F "data=@$input_tokenized.$i" -F "model=$MODEL" -F "input=horizontal" http://lindat.mff.cuni.cz/services/korektor/api/correct | PYTHONIOENCODING=utf-8 python3 -c "import sys,json; sys.stdout.write(json.load(sys.stdin)['result'])" > $output.$i
+done
+
+# Join the chunks
+cat $output.1 $output.2 > $output
+
+# Evaluate with m2scorer
+echo "Evaluating with m2scorer:"
+venv/bin/m2scorer $output GECCC/data/test/sentence.m2
