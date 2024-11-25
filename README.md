@@ -38,7 +38,7 @@ venv/bin/python ./select_sentences_for_evaluation.py
    all the suggested GEC corrections, and save the results into
    `GECCC_corrections`. We used the following:
 
-   - [Opravidlo Betaverze](https://opravidlo.cz/), accessed 2024-11-25,
+   - [Opravidlo Betaverze](https://opravidlo.cz/), accessed 2024-11-14,
      postprocessed with `postprocess_googledocs_and_opravidlo.sh`,
    - [Korektor](https://ufal.mff.cuni.cz/korektor), accessed 2024-11-19,
    - [Google Docs](https://docs.google.com), accessed 2024-11-20, postprocessed
