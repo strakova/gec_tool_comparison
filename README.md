@@ -4,9 +4,10 @@ This repository contains a rigorous evaluation of the available Czech
 off-the-shelf grammar error correction (GEC) tools on a part of the test data of
 the GECCC corpus.
 
-|| System | NF | NWI | R | SL ||
-| Opravidlo | 32.95 | 45.97 | 31.51 | 22.13 | 32.76 |
-| Korektor | 36.90 | 24.66 | 48.86 | 54.66 | 44.71 |
+| System     | NF    | NWI   | R     | SL    |       |
+| ---------- | ----- | ----- | ----- | ----- | ----- |
+| Opravidlo  | 32.95 | 45.97 | 31.51 | 22.13 | 32.76 |
+| Korektor   | 36.90 | 24.66 | 48.86 | 54.66 | 44.71 |
 | GoogleDocs | 39.56 | 29.03 | 52.23 | 47.13 | 45.45 |
 
 ## How to Reproduce the Results
