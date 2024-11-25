@@ -1,7 +1,8 @@
 # Comparison of the Czech Off-the-Shelf GEC Tools
 
-This repository contains a rigorous evaluation of the available Czech grammar
-error correction (GEC) tools on a part of the test data of the GECCC corpus.
+This repository contains a rigorous evaluation of the available Czech
+off-the-shelf grammar error correction (GEC) tools on a part of the test data of
+the GECCC corpus.
 
 1. Clone this repository:
 
@@ -37,9 +38,11 @@ venv/bin/python ./select_sentences_for_evaluation.py
    all the suggested GEC corrections, and save the results into
    `GECCC_corrections`. We used the following:
 
-   - Opravidlo Betaverze, https://opravidlo.cz/, accessed 2024-11-14,
-   - Google Docs, accessed 2024-11-14,
-   - [Korektor](https://ufal.mff.cuni.cz/korektor), accessed 2024-11-19.
+   - [Opravidlo Betaverze](https://opravidlo.cz/), accessed 2024-11-25,
+     postprocessed with `postprocess_googledocs_and_opravidlo.sh`,
+   - [Korektor](https://ufal.mff.cuni.cz/korektor), accessed 2024-11-19,
+   - [Google Docs](https://docs.google.com), accessed 2024-11-20, postprocessed
+     with `postprocess_googledocs_and_opravidlo.sh`.
 
 6. Evaluate the system corrections with the m2scorer. The evaluations will be
    printed to `*.eval` files in the directory `GECCC_evals`:
@@ -48,7 +51,7 @@ venv/bin/python ./select_sentences_for_evaluation.py
 ./evaluate_corrections.sh
 ```
 
-7. Make LaTeX table from the evaluations:
+7. Generate LaTeX table rows from the evaluations in `GECCC_evals`:
 
 ```sh
 ./make_table.py
