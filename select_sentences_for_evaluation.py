@@ -161,6 +161,11 @@ if __name__ == "__main__":
 
     total_selected_sentences = pd.concat(total_selected_sentences)
 
+    # Print the selected sentences original indices in the GECCC test data
+    with open("sentences_test_indices.txt", "w", encoding="utf-8") as fw:
+        for idx, row in total_selected_sentences.iterrows():
+            print("{}\t{}".format(idx, row["Sentence"]), file=fw)
+
     print("Total Summary:".format(domain))
     print("Selected documents: {}/{} ({:.2f}\%), " \
           "sentences: {}/{} ({:.2f}\%), " \

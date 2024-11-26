@@ -12,6 +12,12 @@ CORRECTIONS="GECCC_corrections"
 EVALS="GECCC_evals"
 TMP="/tmp"
 
+if [ -d $EVALS ]; then
+  echo "Removing previously existing directory $EVALS"
+  rm -r $EVALS
+fi
+
+echo "Making directory $EVALS"
 mkdir -p $EVALS
 
 echo "Evaluating:"
@@ -37,7 +43,7 @@ for system in `ls $CORRECTIONS`; do
 
     # Tokenize
     case $system in
-      Korektor) # input was already tokenized before sending to Korektor
+      Korektor|Naplava*)     # input was already tokenized
         tokenized=$system_corrections;;
       *)
         tokenized=/tmp/$domain-$system.tokenized

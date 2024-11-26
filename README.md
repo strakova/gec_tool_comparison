@@ -9,6 +9,9 @@ the GECCC corpus.
 | Opravidlo  | 32.95 | 45.97 | 31.51 | 22.13 | 32.76         |
 | Korektor   | 36.90 | 24.66 | 48.86 | 54.66 | 44.71         |
 | GoogleDocs | 39.56 | 29.03 | 52.23 | 47.13 | 45.45         |
+| Naplava2022_synthetic | 45.92 | 38.14 | 51.14 | 61.79 | 51.81 |
+| Naplava2022_ag_finetuned | 66.45 | 55.02 | 74.39 | 71.81 | 69.82 |
+| Naplava2022_geccc_finetuned | 73.15 | 70.95 | 77.17 | 74.64 | 74.68 |
 
 ## How to Reproduce the Results
 
@@ -42,15 +45,19 @@ venv/bin/pip install -r requirements.txt
 venv/bin/python ./select_sentences_for_evaluation.py
 ```
 
-5. Manually upload/open the documents in the GEC tools of your choice, accept
-   all the suggested GEC corrections, and save the results into
-   `GECCC_corrections`. We used the following:
+5. Upload/open the documents in the GEC tools of your choice, accept all the
+   suggested GEC corrections, and save the results into `GECCC_corrections`. We
+   used the following:
 
    - [Opravidlo Betaverze](https://opravidlo.cz/), accessed 2024-11-14,
      postprocessed with `postprocess_googledocs_and_opravidlo.sh`,
-   - [Korektor](https://ufal.mff.cuni.cz/korektor), accessed 2024-11-19,
+   - [Korektor](https://ufal.mff.cuni.cz/korektor), accessed 2024-11-19, you can
+     reproduce the results by running `korektor.sh`,
    - [Google Docs](https://docs.google.com), accessed 2024-11-20, postprocessed
-     with `postprocess_googledocs_and_opravidlo.sh`.
+     with `postprocess_googledocs_and_opravidlo.sh`,
+   - to get predictions by [Náplava et al. (2022)](https://doi.org/10.1162/tacl_a_00470), run script
+     `naplava2022.py`. The script will select the predictions corresponding to
+     the selected sentences from `Naplava2022` to `GECCC_corrections`.
 
 6. Evaluate the system corrections with the m2scorer. The evaluations will be
    printed to `*.eval` files in the directory `GECCC_evals`:
