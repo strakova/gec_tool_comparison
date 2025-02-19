@@ -1,0 +1,61 @@
+Sub AutoCorrectTxtFiles()
+    Dim filePath As String
+    Dim fileName As String
+    Dim txtContent As String
+    Dim fileSystem As Object
+    Dim txtFile As Object
+    Dim correctedContent As String
+    Dim doc As Document
+    Dim inputFile As Object
+    Dim stream As Object
+    
+    ' Set the path to the directory containing .txt files
+    filePath = "C:\Users\" & Environ("Username") & "\Desktop\puf\GECCC_test_selection_corrected\Second_Learners\"
+    Set fileSystem = CreateObject("Scripting.FileSystemObject")
+    
+    ' Loop through all .txt files in the directory
+    fileName = Dir(filePath & "*.txt")
+    Do While fileName <> ""
+        ' Open the text file as UTF-8 using ADODB.Stream
+        Set stream = CreateObject("ADODB.Stream")
+        With stream
+            .Type = 2 ' Specify stream type - text
+            .Charset = "utf-8" ' Specify encoding as UTF-8
+            .Open
+            .LoadFromFile filePath & fileName
+            txtContent = .ReadText
+            .Close
+        End With
+        
+        ' Create a new Word document
+        Set doc = Documents.Add
+        doc.Content.Text = txtContent
+        
+        ' Apply AutoCorrect
+        doc.Content.LanguageID = wdCzech
+        doc.Range.CheckSpelling
+        doc.Range.CheckGrammar
+        
+        ' Get corrected content
+        correctedContent = doc.Content.Text
+        doc.Close False ' Close without saving the Word document
+        
+        ' Write corrected content back to the .txt file as UTF-8
+        Set stream = CreateObject("ADODB.Stream")
+        With stream
+            .Type = 2 ' Specify stream type - text
+            .Charset = "utf-8" ' Specify encoding as UTF-8
+            .Open
+            .WriteText correctedContent
+            .SaveToFile filePath & fileName, 2 ' Overwrite the file
+            .Close
+        End With
+        
+        ' Move to the next file
+        fileName = Dir
+    Loop
+End Sub
+
+
+
+

@@ -55,6 +55,8 @@ venv/bin/python ./select_sentences_for_evaluation.py
      reproduce the results by running `korektor.sh`,
    - [Google Docs](https://docs.google.com), accessed 2024-11-20, postprocessed
      with `postprocess_googledocs_and_opravidlo.sh`,
+   - MSWord, accessed 2025-01-31, using the `final_vba.txt` macro to go
+     through data,
    - to get predictions by [Náplava et al. (2022)](https://doi.org/10.1162/tacl_a_00470), run script
      `naplava2022.py`. The script will select the predictions corresponding to
      the selected sentences from `Naplava2022` to `GECCC_corrections`.
