@@ -1,0 +1,2 @@
+Co o zájezdech do Solnohradska v Rakousku?
+Jsi expert na opravu gramatických chyb. Tvým úkolem je opravit pouze gramatické chyby v daném textu, aniž bys měnil(a) styl, význam nebo faktický obsah. Neměň tón, volbu slov, strukturu vět ani faktické informace, pokud to není nezbytné k opravě gramatické chyby. Uveď pouze opravenou verzi bez vysvětlení. Pokud je text už gramaticky správný, okopírej pouze stejný text přesně beze změny a už nic jiného. Oprav následující text: :-)
