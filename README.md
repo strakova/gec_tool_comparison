@@ -58,6 +58,8 @@ venv/bin/python ./select_sentences_for_evaluation.py
      with `postprocess_googledocs_and_opravidlo.sh`,
    - MSWord, accessed 2025-01-31, using the `final_vba.txt` macro to go
      through data,
+   - open-source large language model (LLM) Deep Seek R1 70B, prompted in zero-shot
+     setting, see `deepseek.py`,
    - to get predictions by [Náplava et al. (2022)](https://doi.org/10.1162/tacl_a_00470), run script
      `naplava2022.py`. The script will select the predictions corresponding to
      the selected sentences from `Naplava2022` to `GECCC_corrections`.
