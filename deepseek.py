@@ -39,7 +39,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_tokens", default=5000, type=int, help="Maximum tokens in sentences (recommended: max LLM context size / 2).")
     parser.add_argument("--model", default="deepseek-r1:70b", type=str, help="Model name.")
     parser.add_argument("--num_ctx", default=None, type=int, help="Model context size.")
-    parser.add_argument("--output", default="GECCC_corrections/DeepSeek70B_zero-shot/", type=str, help="Output directory.")
+    parser.add_argument("--output", default="GECCC_corrections/DeepSeek70B_zero_shot/", type=str, help="Output directory.")
     #parser.add_argument("--seed", default=42, type=int, help="Random seed.")
     parser.add_argument("--server", required=True, default=None, type=str, help="Server address with port.")
     parser.add_argument("--sleep", default=1, type=int, help="Sleep seconds between requests.")
