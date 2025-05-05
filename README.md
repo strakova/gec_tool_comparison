@@ -10,7 +10,8 @@ the GECCC corpus.
 | Korektor   | 36.90 | 24.66 | 48.86 | 54.66 | 44.71         |
 | GoogleDocs | 39.56 | 29.03 | 52.23 | 47.13 | 45.45         |
 | MSWord     | 52.25 | 46.20 | 51.63 | 55.22 | 51.54         |
-| DeepSeek R1 70B zero-shot | 36.06 | 52.34 | 58.46 | 58.11 | 53.58 |
+| DeepSeek R1 70B zero-shot (see disclaimer) | 36.06 | 52.34 | 58.46 | 58.11 | 53.58 |
+| GPT4o zero-shot (see disclaimer) | 59.06 | 78.88 | 77.16 | 75.64 | 74.60 |
 | Naplava2022_synthetic | 45.92 | 38.14 | 51.14 | 61.79 | 51.81 |
 | Naplava2022_ag_finetuned | 66.45 | 55.02 | 74.39 | 71.81 | 69.82 |
 | Naplava2022_geccc_finetuned | 73.15 | 70.95 | 77.17 | 74.64 | 74.68 |
@@ -62,15 +63,15 @@ venv/bin/python ./select_sentences_for_evaluation.py
    - open-source large language model (LLM) Deep Seek R1 70B, prompted in zero-shot
      setting (see disclaimer below), see `deepseek.py`,
    - large language model (LLM) GPT4o, prompted in zero-shot setting (see
-     disclaimer below),
+     disclaimer below), accessed 2025-05-02,
    - to get predictions by [Náplava et al. (2022)](https://doi.org/10.1162/tacl_a_00470), run script
      `naplava2022.py`. The script will select the predictions corresponding to
      the selected sentences from `Naplava2022` to `GECCC_corrections`.
 
-Since the GECCC training, development, and even test data have been freely
-available online since 2022, and the training corpora of large language models
-(LLMs) are typically undisclosed, it is impossible to determine whether the
-evaluation setting is genuinely zero-shot, that is, to what extent the GECCC
+Disclaimer: Since the GECCC training, development, and even test data have been
+freely available online since 2022, and the training corpora of large language
+models (LLMs) are typically undisclosed, it is impossible to determine whether
+the evaluation setting is genuinely zero-shot, that is, to what extent the GECCC
 data may have been seen during pretraining. More concerningly, the test data
 itself may have been included in the LLMs’ training sets.
 
