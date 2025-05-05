@@ -60,10 +60,19 @@ venv/bin/python ./select_sentences_for_evaluation.py
    - MSWord, accessed 2025-01-31, using the `final_vba.txt` macro to go
      through data,
    - open-source large language model (LLM) Deep Seek R1 70B, prompted in zero-shot
-     setting, see `deepseek.py`,
+     setting (see disclaimer below), see `deepseek.py`,
+   - large language model (LLM) GPT4o, prompted in zero-shot setting (see
+     disclaimer below),
    - to get predictions by [Náplava et al. (2022)](https://doi.org/10.1162/tacl_a_00470), run script
      `naplava2022.py`. The script will select the predictions corresponding to
      the selected sentences from `Naplava2022` to `GECCC_corrections`.
+
+Since the GECCC training, development, and even test data have been freely
+available online since 2022, and the training corpora of large language models
+(LLMs) are typically undisclosed, it is impossible to determine whether the
+evaluation setting is genuinely zero-shot, that is, to what extent the GECCC
+data may have been seen during pretraining. More concerningly, the test data
+itself may have been included in the LLMs’ training sets.
 
 6. Evaluate the system corrections with the m2scorer. The evaluations will be
    printed to `*.eval` files in the directory `GECCC_evals`:
