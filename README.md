@@ -68,12 +68,13 @@ venv/bin/python ./select_sentences_for_evaluation.py
      `naplava2022.py`. The script will select the predictions corresponding to
      the selected sentences from `Naplava2022` to `GECCC_corrections`.
 
-Disclaimer: Since the GECCC training, development, and even test data have been
-freely available online since 2022, and the training corpora of large language
-models (LLMs) are typically undisclosed, it is impossible to determine whether
-the evaluation setting is genuinely zero-shot, that is, to what extent the GECCC
-data may have been seen during pretraining. More concerningly, the test data
-itself may have been included in the LLMs’ training sets.
+Data exposure disclaimer: Since the GECCC training, development, and even test
+data have been freely available online since 2022, and the training corpora of
+large language models (LLMs) are typically undisclosed, it is impossible to
+determine whether the evaluation setting is genuinely zero-shot, that is, to
+what extent the GECCC data may have been seen during pretraining. More
+concerningly, the test data itself may have been included in the LLMs’ training
+sets.
 
 6. Evaluate the system corrections with the m2scorer. The evaluations will be
    printed to `*.eval` files in the directory `GECCC_evals`:
