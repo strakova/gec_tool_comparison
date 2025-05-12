@@ -15,6 +15,7 @@ the GECCC corpus.
 | Naplava2022_synthetic | 45.92 | 38.14 | 51.14 | 61.79 | 51.81 |
 | Naplava2022_ag_finetuned | 66.45 | 55.02 | 74.39 | 71.81 | 69.82 |
 | Naplava2022_geccc_finetuned | 73.15 | 70.95 | 77.17 | 74.64 | 74.68 |
+| Ours | 70.82 | 82.15 | 77.45 | 75.38 | 77.34 |
 
 ## How to Reproduce the Results
 
