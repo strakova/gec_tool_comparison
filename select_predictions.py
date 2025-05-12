@@ -9,7 +9,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
-Read selected test predictions by Náplava et al. (2022).
+Subselect test predictions.
+
+This script subselects test predictions by
+
+- Náplava et al. (2022): from --predictions=Naplava2022,
+- Ours: from --predictions=Ours (default).
 """
 
 
@@ -27,8 +32,8 @@ if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--geccc_test_selection", default="GECCC_test_selection", type=str, help="Path to the GECCC test selection directory.")
-    parser.add_argument("--sentences_test_indices", default="naplava2022_sentences_test_indices.txt", type=str, help="Selected sentences indices into the GECCC test set.""")
-    parser.add_argument("--naplava", default="Naplava2022", type=str, help="Directory with predictions by Naplava et al. (2022) on the GECCC test data.")
+    parser.add_argument("--sentences_test_indices", default="sentences_test_indices.txt", type=str, help="Selected sentences indices into the GECCC test set.""")
+    parser.add_argument("--predictions", default="Ours", type=str, choices=["Ours", "Naplava2022"], help="Directory with predictions by either Naplava et al. (2022) or Ours on the GECCC test data.")
     parser.add_argument("--output_dir", default="GECCC_corrections", type=str, help="Output dir for selected sentences corrections.")
     args=parser.parse_args()
 
@@ -39,13 +44,17 @@ if __name__ == "__main__":
             index, sentence = line.strip().split("\t")
             sentence2test[sentence] = int(index)
 
-    for filename in os.listdir(args.naplava):
-        system = "Naplava2022_{}".format(filename[:-4])
+    for filename in os.listdir(args.predictions):
+
+        if args.predictions == "Naplava2022":
+            system = "Naplava2022_{}".format(filename[:-4])
+        elif args.predictions == "Ours":
+            system = "Ours"
         print("Getting predictions for system {}".format(system), file=sys.stderr)
 
-        # Read predictions by Naplava et al. (2022)
+        # Read predictions.
         predictions = []
-        with open(os.path.join(args.naplava, filename), "r", encoding="utf-8") as fr:
+        with open(os.path.join(args.predictions, filename), "r", encoding="utf-8") as fr:
             predictions = [line.strip() for line in fr]
 
         # Read sentences in each domain and their corresponding predictions
