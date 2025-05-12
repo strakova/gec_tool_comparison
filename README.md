@@ -65,9 +65,13 @@ venv/bin/python ./select_sentences_for_evaluation.py
    - large language model (LLM) GPT4o, prompted in zero-shot setting (see
      disclaimer below), accessed 2025-05-02,
    - to get predictions by [Náplava et al. (2022)](https://doi.org/10.1162/tacl_a_00470), run script
-     `select_predictions.py` with the default values. The script will select the
+     `select_predictions.py --predictions=Naplava2022`. The script will select the
      predictions corresponding to the selected sentences from `Naplava2022` to
-     `GECCC_corrections`.
+     `GECCC_corrections/Naplava2022_*`,
+    - to get predictions by our system, run script `select_predictions.py
+      --predictions=Ours`. The script will select the predictions corresponding
+      to the selected sentences from `Ours` to `GECCC_corrections/Ours`.
+
 
 Data exposure disclaimer: Since the GECCC training, development, and even test
 data have been freely available online since 2022, and the training corpora of
