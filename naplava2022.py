@@ -48,20 +48,20 @@ if __name__ == "__main__":
         with open(os.path.join(args.naplava, filename), "r", encoding="utf-8") as fr:
             predictions = [line.strip() for line in fr]
 
-            # Read sentences in each domain and their corresponding predictions
-            for domain in DOMAINS:
-                sentences = []
-                for filename in sorted(os.listdir(os.path.join(args.geccc_test_selection, domain))):
-                    with open(os.path.join(args.geccc_test_selection, domain, filename), "r", encoding="utf-8") as fr:
-                        sentences.extend([line.strip() for line in fr])
+        # Read sentences in each domain and their corresponding predictions
+        for domain in DOMAINS:
+            sentences = []
+            for filename in sorted(os.listdir(os.path.join(args.geccc_test_selection, domain))):
+                with open(os.path.join(args.geccc_test_selection, domain, filename), "r", encoding="utf-8") as fr:
+                    sentences.extend([line.strip() for line in fr])
 
-                output_domain_dir = os.path.join(args.output_dir, system, domain)
-                if os.path.exists(output_domain_dir) and os.path.isdir(output_domain_dir):
-                    print("Removing existing dir \"{}\"".format(output_domain_dir), file=sys.stderr)
-                    shutil.rmtree(output_domain_dir)
-                print("Making dir \"{}\"".format(output_domain_dir), file=sys.stderr)
-                os.makedirs(output_domain_dir, exist_ok=True)
+            output_domain_dir = os.path.join(args.output_dir, system, domain)
+            if os.path.exists(output_domain_dir) and os.path.isdir(output_domain_dir):
+                print("Removing existing dir \"{}\"".format(output_domain_dir), file=sys.stderr)
+                shutil.rmtree(output_domain_dir)
+            print("Making dir \"{}\"".format(output_domain_dir), file=sys.stderr)
+            os.makedirs(output_domain_dir, exist_ok=True)
 
-                with open(os.path.join(output_domain_dir, "{}-{}.txt".format(domain, system)), "w", encoding="utf-8") as fw:
-                    for sentence in sentences:
-                        print(predictions[sentence2test[sentence]], file=fw)
+            with open(os.path.join(output_domain_dir, "{}-{}.txt".format(domain, system)), "w", encoding="utf-8") as fw:
+                for sentence in sentences:
+                    print(predictions[sentence2test[sentence]], file=fw)
