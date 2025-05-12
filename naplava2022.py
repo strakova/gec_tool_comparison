@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--geccc_test_selection", default="GECCC_test_selection", type=str, help="Path to the GECCC test selection directory.")
-    parser.add_argument("--sentences_test_indices", default="sentences_test_indices.txt", type=str, help="Selected sentences indices into the GECCC test set.""")
+    parser.add_argument("--sentences_test_indices", default="naplava2022_sentences_test_indices.txt", type=str, help="Selected sentences indices into the GECCC test set.""")
     parser.add_argument("--naplava", default="Naplava2022", type=str, help="Directory with predictions by Naplava et al. (2022) on the GECCC test data.")
     parser.add_argument("--output_dir", default="GECCC_corrections", type=str, help="Output dir for selected sentences corrections.")
     args=parser.parse_args()
