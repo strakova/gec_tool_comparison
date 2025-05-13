@@ -43,7 +43,8 @@ for system in `ls $CORRECTIONS`; do
 
     # Tokenize
     case $system in
-      Korektor|Naplava*)     # input was already tokenized
+      # When predictions are already tokenized, skip the tokenization step.
+      Korektor|Naplava*|Ours)
         tokenized=$system_corrections;;
       *)
         tokenized=/tmp/$domain-$system.tokenized
