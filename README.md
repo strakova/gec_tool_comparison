@@ -73,14 +73,13 @@ venv/bin/python ./select_sentences_for_evaluation.py
       --predictions=Ours`. The script will copy the predictions corresponding to
       the selected test sentences from `Ours` to `GECCC_corrections/Ours`.
 
-
-Data exposure disclaimer: Since the GECCC training, development, and even test
-data have been freely available online since 2022, and the training corpora of
-large language models (LLMs) are typically undisclosed, it is impossible to
-determine whether the evaluation setting is genuinely zero-shot, that is, to
-what extent the GECCC data may have been seen during pretraining. More
-concerningly, the test data itself may have been included in the LLMs’ training
-sets.
+Data exposure disclaimer: Since the Czech GEC training, development, and even
+test data have been freely available online since 2019 (AKCES-GEC) and 2022
+(GECCC), and the training corpora of large language models (LLMs) are typically
+undisclosed, it is impossible to determine whether the evaluation setting is
+genuinely zero-shot, that is, to what extent the GECCC data may have been seen
+during pretraining. More concerningly, the test data itself may have been
+included in the LLMs’ training sets.
 
 6. Evaluate the system corrections with the m2scorer. The evaluations will be
    printed to `*.eval` files in the directory `GECCC_evals`:
