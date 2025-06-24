@@ -4,6 +4,9 @@ This repository contains a rigorous evaluation of the available Czech
 off-the-shelf grammar error correction (GEC) tools on a part of the test data of
 the GECCC corpus.
 
+This evaluation will be published at TSD 2025 as **Refining Czech GEC: Insights
+from a~Multi-Experiment Approach** (Pechman et al., 2025).
+
 | System     | NF    | NWI   | R     | SL    | All Domains   |
 | ---------- | ----- | ----- | ----- | ----- | ------------- |
 | Opravidlo  | 32.95 | 45.97 | 31.51 | 22.13 | 32.76         |
